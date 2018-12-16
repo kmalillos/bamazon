@@ -80,8 +80,6 @@ function orderProducts() {
           console.log(`   YOUR TOTAL: $${total}`);
           console.log(`\n*************************************************************************************************\n`); 
           
-          // var query = `UPDATE products SET ? WHERE ?`;
-          // connection.query(query, {stock_quantity: updatedQuantity, item_id: answer.itemID}, function(err, res){
           connection.query(`UPDATE products SET stock_quantity = ${updatedQuantity} WHERE item_id = ${answer.itemID}`, function(err, res){
             console.log(`Thank you for shopping!`)
           });
