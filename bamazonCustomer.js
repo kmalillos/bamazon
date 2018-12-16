@@ -15,9 +15,6 @@ var table = new Table({
   , colWidths: [10, 25, 25, 18, 18]
 });
 
-// var orderID=0;
-// var orderQuantity=0;
-
 // =================================================================================================================================
 // FUNCTIONS
 // =================================================================================================================================
@@ -53,8 +50,7 @@ function orderProducts() {
       name: "itemID",
       type: "input",
       message: "What is the Item ID of product you wish to purchase?",
-    }
-      , {
+    } , {
       name: "quantity",
       type: "input",
       message: "How many units of this product would you like to order?"
@@ -64,10 +60,6 @@ function orderProducts() {
 
       var query = "SELECT * FROM products WHERE ?";
       connection.query(query, { item_id: answer.itemID }, function (err, res) {
-        
-        // update global variables to used in updateProducts function
-        // orderID = answer.itemID;
-        // orderQuantity = answer.quantity;
 
         // console.log(res);
         var product = res[0].product_name;
@@ -87,28 +79,21 @@ function orderProducts() {
           console.log(`   -------------------------------------------`);
           console.log(`   YOUR TOTAL: $${total}`);
           console.log(`\n*************************************************************************************************\n`); 
-        
-          connection.query(`UPDATE products SET stock_quantity = ${updatedQuantity} WHERE item_id = ${answer.itemID}`, function(err, res){
-          //   console.log(`\n*************************************************************************************************\n`);
-          //   console.log(`   YOUR ORDER:
-          // Product: ${product}
-          // Quantity: ${answer.quantity} 
-          // Price per unit: $${productPrice}`);
-  
-          //   console.log(`   -------------------------------------------`);
-          //   console.log(`   YOUR TOTAL: $${total}`);
-          //   console.log(`\n*************************************************************************************************\n`); 
           
-          console.log(`Thank you for shopping!`)
+          // var query = `UPDATE products SET ? WHERE ?`;
+          // connection.query(query, {stock_quantity: updatedQuantity, item_id: answer.itemID}, function(err, res){
+          connection.query(`UPDATE products SET stock_quantity = ${updatedQuantity} WHERE item_id = ${answer.itemID}`, function(err, res){
+            console.log(`Thank you for shopping!`)
           });
-
         } else {
 
           console.log(`\n*************************************************************************************************\n`);
             if (stockQuantity > 1) {
               console.log(`   Insufficient quantity! There are currently ${stockQuantity} units of ${product} in stock.`)
+            } else if (stockQuantity == 1) {
+              console.log(`   Insufficient quantity! There is currently 1 ${product} in stock.`)
             } else {
-              console.log(`   Insufficient quantity! There is currently ${stockQuantity} unit of ${product} in stock.`)
+              console.log(`   Product is out of stock!`)
             }
           console.log(`\n*************************************************************************************************\n`);
 
